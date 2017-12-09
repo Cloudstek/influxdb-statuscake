@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace Cloudstek\InfluxStatusCake\Command;
+namespace Cloudstek\InfluxDB\StatusCake\Command;
 
-use Cloudstek\InfluxStatusCake\Service\StatusCakeInterface;
+use Cloudstek\InfluxDB\StatusCake\Service\StatusCakeInterface;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

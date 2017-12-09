@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - '7.1'
+  - nightly
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: nightly
+    - php: hhvm
+
+before_script:
+  - composer install
+
+script:
+  - phpmd src/ text phpmd.xml
+  - phpcs --standard=phpcs.xml

@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 
-namespace Cloudstek\InfluxStatusCake;
+namespace Cloudstek\InfluxDB\StatusCake;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -27,12 +27,12 @@ $httpClient = new HttpClient([
 
 // Initialize InfluxDB client
 $influxClient = new InfluxClient(
-    getenv('INFLUXDB_HOST') ?? '127.0.0.1',
+    (getenv('INFLUXDB_HOST') ?? '127.0.0.1'),
     getenv('INFLUXDB_PORT'),
     getenv('INFLUXDB_USERNAME'),
     getenv('INFLUXDB_PASSWORD'),
-    getenv('INFLUXDB_SSL') ?? false,
-    getenv('INFLUXDB_VERIFY_SSL') ?? false
+    (getenv('INFLUXDB_SSL') ?? false),
+    (getenv('INFLUXDB_VERIFY_SSL') ?? false)
 );
 
 $influxDatabase = $influxClient->selectDB(getenv('INFLUXDB_DB'));
@@ -45,7 +45,7 @@ $log = (new Logger('app'))
 $statusCake = new Service\StatusCake($httpClient, $log);
 
 // Initialize app
-$app = new Application('influx-statuscake', 'v1.0.0');
+$app = new Application('influxdb-statuscake', 'v1.0.0');
 $app->add(new Command\PerformanceCommand($statusCake, $influxDatabase));
 $app->add(new Command\UptimeCommand($statusCake, $influxDatabase));
 $app->run();

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Cloudstek\InfluxStatusCake\Service;
+namespace Cloudstek\InfluxDB\StatusCake\Service;
 
 use GuzzleHttp\Pool;
 use GuzzleHttp\ClientInterface;
@@ -39,13 +39,16 @@ class StatusCake implements StatusCakeInterface
      * @param LoggerInterface|null $log Logger interface
      * @param CacheInterface|null $cache Cache interface
      */
-    public function __construct(ClientInterface $httpClient, ?LoggerInterface $log = null, ?CacheInterface $cache = null)
-    {
+    public function __construct(
+        ClientInterface $httpClient,
+        ?LoggerInterface $log = null,
+        ?CacheInterface $cache = null
+    ) {
         // HTTP client
         $this->client = $httpClient;
 
         // Initialize cache
-        $this->cache = $cache ?? new FilesystemCache();
+        $this->cache = ($cache ?? new FilesystemCache());
 
         // Logger
         $this->log = $log;
@@ -156,15 +159,19 @@ class StatusCake implements StatusCakeInterface
         $requests = [];
 
         foreach ($tests as $testID => $test) {
-            $requests[$testID] = new Request('GET', sprintf('Tests/Checks?TestID=%d&Fields=%s', $testID, implode(',', ['status', 'location', 'time', 'performance'])));
+            $requests[$testID] = new Request('GET', sprintf(
+                'Tests/Checks?TestID=%d&Fields=%s',
+                $testID,
+                implode(',', ['status', 'location', 'time', 'performance'])
+            ));
         }
 
         $pool = new Pool($this->client, $requests, [
             'concurrency' => 5,
-            'fulfilled' => function (ResponseInterface $response, int $index) use (&$responses) {
+            'fulfilled' => function (ResponseInterface $response, int $index) use (&$responses) : void {
                 $responses[$index] = $response;
             },
-            'rejected' => function ($reason, int $index) use ($tests) {
+            'rejected' => function ($reason, int $index) use ($tests) : void {
                 $this->log->error('Getting performance data for test "{test}" failed: {reason}', [
                     'reason' => $reason,
                     'test' => $tests[$index]->WebsiteName
