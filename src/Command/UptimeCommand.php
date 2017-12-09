@@ -13,9 +13,9 @@ use InfluxDB\Database;
 use InfluxDB\Point;
 
 /**
- * Performance data command
+ * Uptime command
  */
-class PerformanceCommand extends Command
+class UptimeCommand extends Command
 {
     use LockableTrait;
 
@@ -41,7 +41,7 @@ class PerformanceCommand extends Command
         // StatusCake
         $this->statusCake = $statusCake;
 
-        // InfluxDB
+        // InfluxDB client
         $this->influxDatabase = $influxDatabase;
     }
 
@@ -51,8 +51,8 @@ class PerformanceCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('performance')
-            ->setDescription('Store performance data from StatusCake');
+            ->setName('uptime')
+            ->setDescription('Store uptime data from StatusCake');
     }
 
     /**
@@ -68,35 +68,24 @@ class PerformanceCommand extends Command
             return 0;
         }
 
-        // Get list of test IDs
-        $tests = $this->statusCake->getTests(900);
+        // Get tests
+        $tests = $this->statusCake->getTests(null);
 
-        // Get performance data
-        $performances = $this->statusCake->getPerformance($tests);
-
-        // Points
+        // Data points
         $points = [];
 
-        // Convert performance data to points
-        foreach ($performances as $testID => $performance) {
-            $test = $tests[$testID];
-
-            foreach ($performance as $time => $details) {
-                $points[] = new Point(
-                    'statuscake_performance',
-                    $details->Performance,
-                    [
-                        'testID' => $test->TestID,
-                        'testType' => $test->TestType,
-                        'testName' => $test->WebsiteName
-                    ],
-                    [
-                        'location' => $details->Location,
-                        'country' => $details->Country
-                    ],
-                    $time
-                );
-            }
+        foreach ($tests as $test) {
+            $points[] = new Point(
+                'statuscake_uptime',
+                $test->Uptime,
+                [
+                    'testID' => $test->TestID,
+                    'testName' => $test->WebsiteName,
+                    'testType' => $test->TestType,
+                    'paused' => $test->Paused,
+                    'status' => $test->Status
+                ]
+            );
         }
 
         $this->influxDatabase->writePoints($points, Database::PRECISION_SECONDS);

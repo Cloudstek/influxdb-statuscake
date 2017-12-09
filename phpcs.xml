@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Penda">
+    <config name="php_version" value="70100" />
+    <config name="installed_paths" value="../../slevomat/coding-standard"/>
+
+    <!-- Files -->
+    <file>./src</file>
+
+    <!-- PSR-1 -->
+    <rule ref="PSR1" />
+
+    <!-- PSR-2 -->
+    <rule ref="PSR2" />
+
+    <!-- Squizlabs coding standard -->
+    <rule ref="Squiz">
+        <exclude name="Squiz.Arrays" />
+        <exclude name="Squiz.Commenting" />
+        <exclude name="Squiz.Files" />
+        <exclude name="Squiz.NamingConventions" />
+        <exclude name="Squiz.WhiteSpace" />
+        <exclude name="Squiz.PHP" />
+        <exclude name="Squiz.Operators.ComparisonOperatorUsage" />
+        <exclude name="Squiz.Objects.ObjectInstantiation.NotAssigned" />
+        <exclude name="Squiz.ControlStructures.ElseIfDeclaration" />
+        <exclude name="Squiz.ControlStructures.SwitchDeclaration" />
+        <exclude name="Generic.Formatting" />
+        <exclude name="Generic.Commenting.DocComment" />
+        <exclude name="PEAR.Functions" />
+    </rule>
+
+    <!-- Slevomat coding standard (https://github.com/slevomat/coding-standard) -->
+    <rule ref="SlevomatCodingStandard">
+        <exclude name="SlevomatCodingStandard.Namespaces" />
+        <exclude name="SlevomatCodingStandard.Arrays" />
+        <exclude name="SlevomatCodingStandard.Types.EmptyLinesAroundTypeBraces" />
+        <exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableParameterTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification" />
+        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint" />
+    </rule>
+
+    <!-- Return type hint colon spacing -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing">
+        <properties>
+            <property name="spacesCountBeforeColon" value="1" />
+        </properties>
+    </rule>
+
+    <!-- Check FQDN with file path -->
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+        <properties>
+            <property name="rootNamespaces" type="array" value="src=>Cloudstek\InfluxDB\StatusCake"/>
+        </properties>
+    </rule>
+
+    <!-- Check PHP syntax -->
+    <rule ref="Generic.PHP.Syntax" />
+
+</ruleset>
