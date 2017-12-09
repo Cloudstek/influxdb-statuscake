@@ -1,5 +1,7 @@
 # InfluxDB StatusCake
 
+[![Build Status](https://travis-ci.org/Cloudstek/influxdb-statuscake.svg?branch=master)](https://travis-ci.org/Cloudstek/influxdb-statuscake)
+
 CLI tool to import StatusCake data into InfluxDB.
 
 ## Requirements
