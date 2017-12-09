@@ -88,11 +88,12 @@ class PerformanceCommand extends Command
                     [
                         'testID' => $test->TestID,
                         'testType' => $test->TestType,
-                        'testName' => $test->WebsiteName
-                    ],
-                    [
+                        'testName' => $test->WebsiteName,
                         'location' => $details->Location,
                         'country' => $details->Country
+                    ],
+                    [
+
                     ],
                     $time
                 );
