@@ -14,5 +14,5 @@ before_script:
   - composer install
 
 script:
-  - phpmd src/ text phpmd.xml
-  - phpcs --standard=phpcs.xml
+  - vendor/bin/phpmd src/ text phpmd.xml
+  - vendor/bin/phpcs --standard=phpcs.xml
